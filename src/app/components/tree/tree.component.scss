@@ -1,0 +1,136 @@
+$icon-width: 16px;
+$node-height: 18px;
+$icon-text-space: 4px;
+$hover-bg-color: #efefef;
+$active-bg-color: #dfe8f6;
+.real-tree {
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+//节点
+.tree-node {
+    position: relative;
+    line-height: $node-height;
+    padding-left: $icon-width;
+}
+
+//节点连线
+.tree-node:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: $node-height;
+    bottom: 0;
+    width: $icon-width;
+    background-repeat: repeat-y;
+    background-image: url("../../../assets/images/icons/default/tree/elbow-line.gif");
+}
+
+//文字
+.node-text {
+    font-size: 12px;
+}
+
+//鼠标经过和选中效果
+.node-content {
+    position: relative;
+    display: inline-block;
+    height: $node-height;
+    line-height: $node-height;
+    padding-left: $icon-width + $icon-text-space;
+    user-select: none;
+}
+
+.node-content:hover {
+    background-color: $hover-bg-color;
+}
+
+.node-content:active, .node-content.active {
+    background-color: $hover-bg-color;
+}
+
+.node-content:hover > .node-text {
+    font-weight: bold;
+}
+
+/*-----------节点图标-----------*/
+//节点图标(文件夹关闭 文件夹打开 叶子)
+.node-icon {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: $icon-width;
+    height: $node-height;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+//文件夹关闭
+.node-parent > .node-content > .node-icon {
+    background-image: url("../../../assets/images/icons/default/tree/folder.gif");
+}
+
+//文件夹打开
+.node-parent.node-open > .node-content > .node-icon {
+    background-image: url("../../../assets/images/icons/default/tree/folder-open.gif");
+}
+
+.node-parent.node-loading > .node-content > .node-icon {
+    background-image: url("../../../assets/images/icons/default/tree/loading.gif");
+}
+
+//叶子
+.node-leaf > .node-content > .node-icon {
+    background-image: url("../../../assets/images/icons/default/tree/leaf.gif");
+}
+
+/*-----------连线图标-----------*/
+//连线图标(收起 展开 线)
+.node-image {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: $icon-width;
+    height: $node-height;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
+//收起(中间)
+.node-parent > .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-plus.gif");
+}
+
+//收起(最后一个)
+.node-parent:last-child > .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end-plus-nl.gif");
+}
+
+//收起(第一个)
+.node-parent:only-child > .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end-plus.gif");
+}
+
+//展开(中间)
+.node-parent.node-open > .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-minus.gif");
+}
+
+//展开(最后一个)
+.node-parent.node-open:last-child > .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end-minus.gif");
+}
+
+//叶子(中间)
+.node-leaf > .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow.gif");
+}
+
+//叶子(最后一个)
+.node-leaf:last-child > .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end.gif");
+}
