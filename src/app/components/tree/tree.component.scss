@@ -1,48 +1,199 @@
-$icon-width: 16px;
-$node-height: 18px;
-$icon-text-space: 4px;
-$hover-bg-color: #efefef;
-$active-bg-color: #dfe8f6;
-.real-tree {
+$icon-width: 16px; //图标宽度
+$node-height: 18px; //节点高度
+$icon-text-space: 4px; //图标离文字的距离
+$hover-bg-color: #efefef; //鼠标移动时的背景色
+$active-bg-color: #dfe8f6; //鼠标点击时的背景色
+
+$checkbox-size: 14px; //复选框大小
+$btn-size: 16px; //按钮大小
+.tree {
 }
 
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+//节点容器
+.node-container {
+    position: relative;
+    line-height: $node-height;
+    //节点容器连线
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: $node-height;
+        bottom: 0;
+        width: $icon-width;
+        background-repeat: repeat-y;
+        background-image: url("../../../assets/images/icons/default/tree/elbow-line.gif");
+    }
+    .tree {
+        padding-left: $icon-width;
+    }
+    .input-text {
+        display: none;
+        outline: none;
+        border: 1px solid #b5b8c8;
+        border-radius: 2px;
+        box-shadow: inset 0px 0px 1px rgba(243, 243, 243, 1);
+        width: 100px;
+        height: $node-height;
+    }
+    &.is-edit {
+        > .node {
+            .node-text {
+                display: none;
+            }
+            .input-text {
+                display: block;
+            }
+            &:hover {
+                .node-btns {
+                    display: none;
+                }
+            }
+        }
+    }
 }
 
 //节点
-.tree-node {
+.node {
     position: relative;
-    line-height: $node-height;
+    height: $node-height;
     padding-left: $icon-width;
+    cursor: default;
+    .checkbox {
+        float: left;
+        display: block;
+        margin-left: 1px;
+        margin-right: 5px;
+        margin-top: ($node-height - $checkbox-size)/2;
+    }
+    &:hover {
+        .node-btns {
+            display: block;
+        }
+    }
 }
 
-//节点连线
-.tree-node:before {
-    content: '';
+/*-----------复选框-----------*/
+.checkbox {
+    position: relative;
+    display: inline-block;
+    width: $checkbox-size;
+    height: $checkbox-size;
+    font-size: 0;
+    line-height: 0;
+    background-color: #fff;
+    border: 1px solid #838383;
+    box-shadow: none;
+    outline: none;
+    cursor: hand;
+    cursor: pointer;
+    &:hover {
+        box-shadow: inset 0px 0px 4px rgba(249, 189, 72, 1);
+    }
+    &.partial:before {
+        content: '';
+        width: $checkbox-size - 2;
+        height: $checkbox-size - 2;
+        display: block;
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+    &.active:after {
+        content: '';
+        width: 7px;
+        height: 3px;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        border: 2px solid #00a0e9;
+        border-top: none;
+        border-right: none;
+        background: transparent;
+        -moz-transform: rotate(-45deg);
+        -ms-transform: rotate(-45deg);
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+    }
+    &.disabled {
+        border-color: #cac8bb;
+        cursor: default;
+        &:hover {
+            box-shadow: none;
+        }
+        &.partial:before {
+            background-color: rgba(100, 100, 100, 0.2);
+        }
+        &.active:after {
+            border-color: #cac8bb;
+        }
+    }
+}
+
+/*-----------连线图标-----------*/
+//连线图标(收起 展开 线)
+.node-image {
     position: absolute;
     left: 0;
-    top: $node-height;
-    bottom: 0;
+    top: 0;
     width: $icon-width;
-    background-repeat: repeat-y;
-    background-image: url("../../../assets/images/icons/default/tree/elbow-line.gif");
+    height: $node-height;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
-//文字
-.node-text {
-    font-size: 12px;
+//收起(中间)
+.is-parent > .node .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-plus.gif");
 }
 
+//收起(最后一个)
+.is-parent:last-child > .node .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end-plus.gif");
+}
+
+//收起(第一个)
+.is-parent:only-child > .node .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end-plus.gif");
+}
+
+//展开(中间)
+.is-parent.is-open > .node .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-minus.gif");
+}
+
+//展开(最后一个)
+.is-parent.is-open:last-child > .node .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end-minus.gif");
+}
+
+//叶子(中间)
+.is-leaf > .node .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow.gif");
+}
+
+//叶子(最后一个)
+.is-leaf:last-child > .node .node-image {
+    background-image: url("../../../assets/images/icons/default/tree/elbow-end.gif");
+}
+
+/*-----------内容-----------*/
 //鼠标经过和选中效果
 .node-content {
     position: relative;
     display: inline-block;
     height: $node-height;
     line-height: $node-height;
-    padding-left: $icon-width + $icon-text-space;
+    padding: 0 3px;
+    padding-left: $icon-width + $icon-text-space + 1;
     user-select: none;
+    font-size: 12px;
+    display: block;
+    float: left;
 }
 
 .node-content:hover {
@@ -50,10 +201,10 @@ $active-bg-color: #dfe8f6;
 }
 
 .node-content:active, .node-content.active {
-    background-color: $hover-bg-color;
+    background-color: $active-bg-color;
 }
 
-.node-content:hover > .node-text {
+.node-content:hover {
     font-weight: bold;
 }
 
@@ -70,67 +221,53 @@ $active-bg-color: #dfe8f6;
 }
 
 //文件夹关闭
-.node-parent > .node-content > .node-icon {
+.is-parent > .node .node-icon {
     background-image: url("../../../assets/images/icons/default/tree/folder.gif");
 }
 
 //文件夹打开
-.node-parent.node-open > .node-content > .node-icon {
+.is-parent.is-open > .node .node-icon {
     background-image: url("../../../assets/images/icons/default/tree/folder-open.gif");
 }
 
-.node-parent.node-loading > .node-content > .node-icon {
+//加载中
+.is-parent.is-loading > .node .node-icon {
     background-image: url("../../../assets/images/icons/default/tree/loading.gif");
 }
 
 //叶子
-.node-leaf > .node-content > .node-icon {
+.is-leaf > .node .node-icon {
     background-image: url("../../../assets/images/icons/default/tree/leaf.gif");
 }
 
-/*-----------连线图标-----------*/
-//连线图标(收起 展开 线)
-.node-image {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: $icon-width;
+/*-----------操作按钮-----------*/
+.node-btns {
+    position: relative;
+    float: left;
     height: $node-height;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-
-//收起(中间)
-.node-parent > .node-image {
-    background-image: url("../../../assets/images/icons/default/tree/elbow-plus.gif");
-}
-
-//收起(最后一个)
-.node-parent:last-child > .node-image {
-    background-image: url("../../../assets/images/icons/default/tree/elbow-end-plus-nl.gif");
-}
-
-//收起(第一个)
-.node-parent:only-child > .node-image {
-    background-image: url("../../../assets/images/icons/default/tree/elbow-end-plus.gif");
-}
-
-//展开(中间)
-.node-parent.node-open > .node-image {
-    background-image: url("../../../assets/images/icons/default/tree/elbow-minus.gif");
-}
-
-//展开(最后一个)
-.node-parent.node-open:last-child > .node-image {
-    background-image: url("../../../assets/images/icons/default/tree/elbow-end-minus.gif");
-}
-
-//叶子(中间)
-.node-leaf > .node-image {
-    background-image: url("../../../assets/images/icons/default/tree/elbow.gif");
-}
-
-//叶子(最后一个)
-.node-leaf:last-child > .node-image {
-    background-image: url("../../../assets/images/icons/default/tree/elbow-end.gif");
+    font-size: 0;
+    line-height: 0;
+    margin-left: 5px;
+    display: none;
+    .btn-node {
+        float: left;
+        display: block;
+        width: $btn-size;
+        height: $btn-size;
+        margin-left: 5px;
+        margin-top: ($node-height - $btn-size)/2;
+        cursor: hand;
+        cursor: pointer;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    .node-add {
+        background-image: url("../../../assets/images/icons/default/tree/icon-add.gif");
+    }
+    .node-edit {
+        background-image: url("../../../assets/images/icons/default/tree/icon-edit.gif");
+    }
+    .node-delete {
+        background-image: url("../../../assets/images/icons/default/tree/icon-delete.gif");
+    }
 }
