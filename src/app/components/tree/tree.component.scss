@@ -33,11 +33,16 @@ $btn-size: 16px; //按钮大小
     .tree {
         padding-left: $icon-width;
     }
-    .input-text {
+    .input-area{
+        position: relative;
         display: none;
+        width: 100px;
+        height: $node-height;
+    }
+    .input-text {
+        display: block;
         outline: none;
-        border: 1px solid #b5b8c8;
-        border-radius: 2px;
+        border: 1px solid #a9a9a9;
         box-shadow: inset 0px 0px 1px rgba(243, 243, 243, 1);
         width: 100px;
         height: $node-height;
@@ -47,7 +52,7 @@ $btn-size: 16px; //按钮大小
             .node-text {
                 display: none;
             }
-            .input-text {
+            .input-area {
                 display: block;
             }
             &:hover {
